@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gatekeeper-policies
+  name: gatekeeper-constraints
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: 'https://github.com/kunjbhuva7/gcp-idp-platform.git'
     targetRevision: HEAD
-    path: gitops/infrastructure/policies
+    path: gitops/infrastructure/policies/constraints
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
