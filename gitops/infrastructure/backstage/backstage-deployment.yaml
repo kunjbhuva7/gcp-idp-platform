@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: spotify/backstage:latest
+          image: ghcr.io/backstage/backstage:latest
           ports:
             - containerPort: 7007
           resources:
