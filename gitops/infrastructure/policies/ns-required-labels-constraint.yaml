@@ -2,6 +2,9 @@ apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sRequiredLabels
 metadata:
   name: ns-must-have-owner
+  annotations:
+    # Use GitOps Sync Waves to force this to apply AFTER the ConstraintTemplate registers!
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   match:
     kinds:
