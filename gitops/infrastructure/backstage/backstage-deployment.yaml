@@ -18,6 +18,11 @@ spec:
           image: ghcr.io/backstage/backstage:latest
           ports:
             - containerPort: 7007
+          env:
+            - name: APP_CONFIG_app_baseUrl
+              value: http://34.136.85.24
+            - name: APP_CONFIG_backend_baseUrl
+              value: http://34.136.85.24
           resources:
             limits:
               cpu: "500m"
