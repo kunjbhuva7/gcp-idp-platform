@@ -18,6 +18,12 @@ spec:
           image: ghcr.io/backstage/backstage:latest
           ports:
             - containerPort: 7007
+          command:
+            - node
+          args:
+            - packages/backend
+            - --config
+            - app-config.yaml
           env:
             - name: APP_CONFIG_app_baseUrl
               value: http://34.136.85.24
