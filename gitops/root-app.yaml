@@ -8,8 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    # Replace 'YOUR_GITHUB_USERNAME' with your actual GitHub username
-    repoURL: 'https://github.com/YOUR_GITHUB_USERNAME/gcp-idp-platform.git'
+    repoURL: 'https://github.com/kunjbhuva7/gcp-idp-platform.git'
     targetRevision: HEAD
     path: gitops/apps
   destination:
