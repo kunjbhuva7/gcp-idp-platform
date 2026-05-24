@@ -29,6 +29,8 @@ spec:
               value: http://34.136.85.24
             - name: APP_CONFIG_backend_baseUrl
               value: http://34.136.85.24
+            - name: APP_CONFIG_backend_csp_upgrade__insecure__requests
+              value: "false"
           resources:
             limits:
               cpu: "500m"
