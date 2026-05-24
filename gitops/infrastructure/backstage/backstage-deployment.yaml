@@ -34,6 +34,8 @@ spec:
               value: "false"
             - name: APP_CONFIG_permission_enabled
               value: "false"
+            - name: APP_CONFIG_backend_auth_dangerouslyDisableDefaultAuthPolicy
+              value: "true"
           resources:
             limits:
               cpu: "500m"
