@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: gcp-idp-platform
+  description: Regional Internal Developer Platform (IDP) Landing Zone on Google Cloud
+  tags:
+    - gcp
+    - gke
+    - terraform
+    - gitops
+    - backstage
+    - vault
+spec:
+  type: service
+  lifecycle: production
+  owner: platform-team
