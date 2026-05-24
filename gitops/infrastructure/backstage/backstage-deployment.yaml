@@ -29,7 +29,7 @@ spec:
               value: http://34.136.85.24
             - name: APP_CONFIG_backend_baseUrl
               value: http://34.136.85.24
-            - name: APP_CONFIG_backend_csp_upgrade__insecure__requests
+            - name: APP_CONFIG_backend_csp_upgradeInsecureRequests
               value: "false"
           resources:
             limits:
