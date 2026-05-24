@@ -36,6 +36,8 @@ spec:
               value: "false"
             - name: APP_CONFIG_backend_auth_dangerouslyDisableDefaultAuthPolicy
               value: "true"
+            - name: APP_CONFIG_backend_reading_allow
+              value: '[{"host":"raw.githubusercontent.com"},{"host":"github.com"}]'
           resources:
             limits:
               cpu: "500m"
