@@ -1,0 +1,303 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment-html-config
+  namespace: default
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Secure Cloud Payment Terminal</title>
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: 'Outfit', sans-serif;
+                background: radial-gradient(circle at top right, #1a1b36 0%, #0d0e15 100%);
+                color: #ffffff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                overflow: hidden;
+            }
+            .payment-card {
+                background: rgba(255, 255, 255, 0.03);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border: 1px rgba(255, 255, 255, 0.08) solid;
+                border-radius: 24px;
+                padding: 40px;
+                width: 100%;
+                max-width: 440px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+                position: relative;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+            .payment-card:hover {
+                transform: translateY(-5px);
+                border-color: rgba(99, 102, 241, 0.3);
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .header h1 {
+                font-size: 26px;
+                font-weight: 700;
+                background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 8px;
+            }
+            .header p {
+                font-size: 14px;
+                color: #94a3b8;
+                font-weight: 300;
+            }
+            .form-group {
+                margin-bottom: 20px;
+                position: relative;
+            }
+            .form-group label {
+                display: block;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                color: #a5b4fc;
+                margin-bottom: 8px;
+                font-weight: 600;
+            }
+            .input-wrapper {
+                position: relative;
+            }
+            .form-group input {
+                width: 100%;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 14px 16px;
+                color: #ffffff;
+                font-family: inherit;
+                font-size: 15px;
+                transition: all 0.3s ease;
+                outline: none;
+            }
+            .form-group input:focus {
+                border-color: #6366f1;
+                background: rgba(255, 255, 255, 0.08);
+                box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+            }
+            .pay-btn {
+                width: 100%;
+                background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+                border: none;
+                border-radius: 14px;
+                padding: 16px;
+                color: #ffffff;
+                font-family: inherit;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                overflow: hidden;
+            }
+            .pay-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
+            }
+            .pay-btn:active {
+                transform: translateY(1px);
+            }
+            /* Animation Overlay */
+            .overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #0d0e15;
+                border-radius: 24px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.5s ease;
+                z-index: 10;
+            }
+            .overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+            /* Loader Animation */
+            .loader {
+                width: 60px;
+                height: 60px;
+                border: 4px solid rgba(99, 102, 241, 0.1);
+                border-left-color: #6366f1;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin-bottom: 20px;
+            }
+            @keyframes spin {
+                100% { transform: rotate(360deg); }
+            }
+            /* Checkmark Success Animation */
+            .success-checkmark {
+                width: 80px;
+                height: 115px;
+                margin: 0 auto;
+                display: none;
+            }
+            .check-icon {
+                width: 80px;
+                height: 80px;
+                position: relative;
+                border-radius: 50%;
+                box-sizing: content-box;
+                border: 4px solid #4caf50;
+            }
+            .check-icon::after {
+                top: 23px;
+                left: 15px;
+                width: 45px;
+                height: 22px;
+                transform: rotate(-45deg);
+                border-left: 4px solid #4caf50;
+                border-bottom: 4px solid #4caf50;
+                content: "";
+                position: absolute;
+            }
+            .success-message {
+                text-align: center;
+                margin-top: 20px;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.5s ease;
+            }
+            .success-message.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .success-message h2 {
+                color: #4caf50;
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 10px;
+            }
+            .success-message p {
+                font-size: 15px;
+                color: #94a3b8;
+                font-weight: 300;
+                line-height: 1.5;
+            }
+            .success-message span {
+                color: #ffffff;
+                font-weight: 600;
+            }
+            .reset-btn {
+                margin-top: 25px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: #94a3b8;
+                padding: 10px 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 13px;
+                transition: all 0.3s ease;
+            }
+            .reset-btn:hover {
+                background: rgba(255, 255, 255, 0.1);
+                color: #ffffff;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="payment-card" id="card">
+            <!-- Normal Payment Form -->
+            <div class="header">
+                <h1>Payment Terminal</h1>
+                <p>Secure Cloud Transaction Simulator</p>
+            </div>
+            <form id="payment-form" onsubmit="handlePay(event)">
+                <div class="form-group">
+                    <label for="name">Account Holder Name</label>
+                    <input type="text" id="name" required placeholder="John Doe" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount (USD)</label>
+                    <input type="number" id="amount" required min="1" step="0.01" placeholder="150.00" autocomplete="off">
+                </div>
+                <button type="submit" class="pay-btn" id="pay-button">
+                    <span>Pay Securely</span>
+                </button>
+            </form>
+
+            <!-- Interactive Loading & Success Animation Overlay -->
+            <div class="overlay" id="overlay">
+                <div class="loader" id="loader"></div>
+                <div class="success-checkmark" id="checkmark">
+                    <div class="check-icon"></div>
+                </div>
+                <div class="success-message" id="message">
+                    <h2>Successful Payment!</h2>
+                    <p>Thank you <span id="display-name"></span> for your payment of <span id="display-amount"></span>.</p>
+                    <p style="font-size: 12px; margin-top: 5px; color: #64748b;">Transaction successfully processed on GKE.</p>
+                    <button class="reset-btn" onclick="resetForm()">New Transaction</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function handlePay(e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value;
+                const amount = parseFloat(document.getElementById('amount').value).toFixed(2);
+
+                document.getElementById('display-name').innerText = name;
+                document.getElementById('display-amount').innerText = `$${amount}`;
+
+                // Activate overlay and loader
+                const overlay = document.getElementById('overlay');
+                const loader = document.getElementById('loader');
+                const checkmark = document.getElementById('checkmark');
+                const message = document.getElementById('message');
+
+                overlay.classList.add('active');
+                loader.style.display = 'block';
+                checkmark.style.display = 'none';
+                message.classList.remove('show');
+
+                // Simulate processing delay
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    checkmark.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        message.classList.add('show');
+                    }, 200);
+                }, 2000);
+            }
+
+            function resetForm() {
+                document.getElementById('payment-form').reset();
+                document.getElementById('overlay').classList.remove('active');
+            }
+        </script>
+    </body>
+    </html>
