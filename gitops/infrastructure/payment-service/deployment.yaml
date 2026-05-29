@@ -29,7 +29,7 @@ spec:
             memory: 64Mi
         volumeMounts:
         - name: html-volume
-          mountPath: /usr/share/nginx/html
+          mountPath: /usr/share/nginx/html/payment
       volumes:
       - name: html-volume
         configMap:
